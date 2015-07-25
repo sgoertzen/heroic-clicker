@@ -11,6 +11,9 @@
 ; F11 - Pause (press F9 or F10 to start it again)
 ; F12 - Exit
 ;
+; Helper hotkeys
+; F7 - Can be used to restart "Play forever" in the middle of a run
+;
 ; **************************************************************************************
 ;  Set these values
 ; **************************************************************************************
@@ -40,10 +43,11 @@ global SUPER_CLICK := 480
 global ENERGIZE := 530
 global RELOAD := 580
 
-F6::
-    startTimer()
-    return
-
+F7::
+  startTimer()
+  grind()
+  return
+  
 F9::
   setDefaults()
   doEverything()
@@ -143,7 +147,7 @@ grind() {
             getClickables()
             useAbilities()
             
-			if (isProgressionModeOff() = 1){
+			if (isProgressionModeOff()){
 				clickProgressionMode()
 			}
         }
@@ -352,13 +356,13 @@ scrollToListBottom() {
 }
 
 isProgressionModeOff(){
-  ImageSearch, foundX, foundY, 1124, 278, 1126, 280, red.png
+  ImageSearch, foundX, foundY, 1124, 278, 1126, 280, *5 red.png
   if ErrorLevel = 2
-		return 0
+		return false
 	else if ErrorLevel = 1
-		return 0
+		return false
 	else
-		return 1
+		return true
 }
 
 clickProgressionMode() {
