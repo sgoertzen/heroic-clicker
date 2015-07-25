@@ -28,9 +28,9 @@ Features:
 - F8  - Pause
 - F10 - Exit
 
-----------
 ## Note
 The window must be active for the script to detect auto-progression is off.  Everything else works with the window in the background.
+
 ----------
 
 ## Future Enhancements
