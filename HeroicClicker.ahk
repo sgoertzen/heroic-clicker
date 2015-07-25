@@ -6,9 +6,10 @@
 ;
 ; Instructions:
 ; Run .ahk file (using autohotkey: http://www.autohotkey.com/)
-; F2  - Do everything (iris, level heroes, grind)
+; F2  - Play the game forever (iris, level heroes, grind)
 ; F3  - Initial Iris start
 ; F4  - Level all heroes
+; F5  - Salvage Relics
 ; F6  - Grind (kill monsters and level up)
 ; F7  - Ascend
 ; F8  - Pause
@@ -41,10 +42,14 @@ global ENERGIZE := 530
 global RELOAD := 580
 
 F2::
-    setDefaults()
-    irisStart()
-    levelAllHeroes()
-    grind()
+    ;while(true) {
+        setDefaults()
+        ascend()
+        irisStart()
+        levelAllHeroes()
+        grind()
+    ;}
+    ; salvageRelics()
 
 F3::
     setDefaults()
@@ -56,6 +61,7 @@ F4::
   return
 
 F5::
+	salvageRelics()
 	return
 
 F6::
@@ -76,6 +82,7 @@ F10::
   ExitApp
   return
 
+  
 ascend() {
   scrollToListTop()
   ControlClick,, %title%,,,, x545 y450 NA
@@ -130,7 +137,7 @@ grind() {
 
 		remainder := mod(i, 50)
         if(remainder = 0) {
-			clearArtifactDialog()
+			clearRelicDialog()
             getClickables()
             useAbilities()
             
@@ -155,6 +162,16 @@ grind() {
     return
 }
 
+salvageRelics() {
+  ControlClick,, %title%,,,, x373 y100 NA ; Click relics tab
+  Sleep 500  
+  ControlClick,, %title%,,,, x278 y439 NA ; Click Salvage
+  Sleep 500
+  ControlClick,, %title%,,,, x501 y404 NA ; Click yes button
+  Sleep 500
+  ControlClick,, %title%,,,, x41 y100 NA ; Click hero tab
+  Sleep 500
+}
 
 useAbilities() {
     ; TODO: use abilities at more appropriate times
@@ -180,7 +197,7 @@ useAbility(ability) {
 }
 
 
-clearArtifactDialog() {
+clearRelicDialog() {
   ControlClick,, %title%,,,, x560 y375 NA
   Sleep 1000
   ControlClick,, %title%,,,, x925 y120 NA
