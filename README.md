@@ -21,13 +21,13 @@ Features:
 4. Get at least 3 heroes unlocked then press F6
 
 ## Hotkeys
-F2  - Do everything (iris, level heroes, grind)
-F3  - Initial Iris start
-F4  - Level all heroes
-F6  - Grind (kill monsters and level up)
-F7  - Ascend
-F8  - Pause
-F10 - Exit
+- F2  - Do everything (iris, level heroes, grind)
+- F3  - Initial Iris start
+- F4  - Level all heroes
+- F6  - Grind (kill monsters and level up)
+- F7  - Ascend
+- F8  - Pause
+- F10 - Exit
 
 ----------
 
