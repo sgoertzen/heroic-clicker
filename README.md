@@ -31,7 +31,6 @@ Features:
 ## Note
 The window must be active for the script to detect auto-progression is off.  Everything else works with the window in the background.
 
-----------
 
 ## Future Enhancements
 Keep track of the timers on skills and use them more effectively
