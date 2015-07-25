@@ -147,8 +147,12 @@ grind() {
         }
 
 		remainder := mod(i, 200)
-        if(remainder = 0) {
-			purchaseAllUpgrades()
+        if(remainder = 0) {     
+            goldFound := isGildedHeroInSecondSlot()    
+            if (!goldFound) {
+                scrollToListBottom()
+            }
+			clickBuyAvailableUpgrades()
 			clickHeroInSlot(2, 25)
         }
 
@@ -303,7 +307,8 @@ levelAllHeroes() {
 
     ; Buy all available upgrades
     Sleep 300
-    purchaseAllUpgrades()
+    scrollToListBottom()
+    clickBuyAvailableUpgrades()
 
     return
 }
@@ -320,8 +325,7 @@ upgradeHerosOnScreen() {
   }
 }
 
-purchaseAllUpgrades(){
-    scrollToListBottom()
+clickBuyAvailableUpgrades(){
     ControlClick,, %title%,,,, x280 y550 NA
 }
 
@@ -357,4 +361,16 @@ isProgressionModeOff(){
 
 clickProgressionMode() {
     ControlClick,, %title%,,,, x1110 y250 NA
+}
+
+isGildedHeroInSecondSlot() {
+    ; search at 15-20 x coordinates, between 320 and 380
+  ImageSearch, foundX, foundY, 15, 320, 24, 380, *5 gold.png
+  ;ImageSearch, foundX, foundY, 17, 360, 17, 361, *5 gold.png
+  if ErrorLevel = 2
+		return false
+	else if ErrorLevel = 1
+		return false
+	else
+		return true
 }
