@@ -6,22 +6,21 @@
 ;
 ; Instructions:
 ; Run .ahk file (using autohotkey: http://www.autohotkey.com/)
-; F2  - Play the game forever (iris, level heroes, grind)
-; F3  - Initial Iris start
-; F4  - Level all heroes
-; F5  - Salvage Relics
-; F6  - Grind (kill monsters and level up)
-; F7  - Ascend
-; F8  - Pause
-; F10 - Exit
+; F9  - Play the game forever (iris, level heroes, grind, salvage relics, ascend)
+; F10 - Grind (kill monsters and level up)
+; F11 - Pause (press F9 or F10 to start it again)
+; F12 - Exit
 ;
 ; **************************************************************************************
 ;  Set these values
 ; **************************************************************************************
+; How many minutes before it should ascend
+global minutesPerAscension := 180
+; Set the level of your iris ancient.  Set to Zero if you don't have iris
+global irislevel := 162
 ; change this value to adjust script speed (milliseconds)
 global timing := 25
-; Set the level of your iris ancient.  Only used if you are using the iris start (F3)
-global irislevel := 162
+
 ; **************************************************************************************
 ; **************************************************************************************
 
@@ -41,47 +40,50 @@ global SUPER_CLICK := 480
 global ENERGIZE := 530
 global RELOAD := 580
 
-F2::
-    ;while(true) {
-        setDefaults()
-        ascend()
-        irisStart()
-        levelAllHeroes()
-        grind()
-    ;}
-    ; salvageRelics()
-
-F3::
-    setDefaults()
-    irisStart()
+F6::
+    startTimer()
     return
 
-F4::
-  levelAllHeroes()
+F9::
+  setDefaults()
+  doEverything()
   return
-
-F5::
-	salvageRelics()
-	return
-
-F6::
+  
+F10::
+  setDefaults()
   grind()
   return
-
-F7::
-  ascend()
-  return
-
-; F8 will pause the auto-clicker
-F8::
+  
+F11::
   stop := true
   return
-
-; F10 will exit the script entirely
-F10::
+   
+F12::
   ExitApp
   return
 
+doEverything() {
+    startTimer()
+    salvageRelics()
+    ascend()
+    if (irislevel > 0){
+        irisStart()
+        levelAllHeroes()
+    }
+    grind()
+}
+
+startTimer(){
+    timeInMilli := minutesPerAscension * 60 * 1000
+    SetTimer, AscensionTimer, %timeInMilli%
+}
+
+AscensionTimer:
+    SetTimer, AscensionTimer, off 
+    stop := true
+    Sleep 10000 ; Wait for everything to finish
+    doEverything()
+    return
   
 ascend() {
   scrollToListTop()
