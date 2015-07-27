@@ -42,22 +42,8 @@ global SUPER_CLICK := 480
 global ENERGIZE := 530
 global RELOAD := 580
 
-F5::
-  levelAllHeroes()
-  return
-
-F6::
-  Send {z down}
-  ypos := 200
-  while (ypos < 600) {
-	ypos += 5
-	ControlClick,, %title%,,,1, x156 y%ypos% NA
-  }
-    Send {z up}  ; Release the up-arrow key.
-  ExitApp
-  return
-
 F7::
+  setDefaults()
   startTimer()
   grind()
   return
