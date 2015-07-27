@@ -27,7 +27,6 @@ global timing := 25
 ; **************************************************************************************
 ; **************************************************************************************
 
-
 #SingleInstance force ; if script is opened again, replace instance
 #Persistent ; script stays in memory until ExitApp is called or script crashes
 
@@ -42,6 +41,21 @@ global DARK_RITUAL := 425
 global SUPER_CLICK := 480
 global ENERGIZE := 530
 global RELOAD := 580
+
+F5::
+  levelAllHeroes()
+  return
+
+F6::
+  Send {z down}
+  ypos := 200
+  while (ypos < 600) {
+	ypos += 5
+	ControlClick,, %title%,,,1, x156 y%ypos% NA
+  }
+    Send {z up}  ; Release the up-arrow key.
+  ExitApp
+  return
 
 F7::
   startTimer()
@@ -85,7 +99,9 @@ startTimer(){
 AscensionTimer:
     SetTimer, AscensionTimer, off 
     stop := true
-    Sleep 10000 ; Wait for everything to finish
+    ; Wait for everything to finish
+    Sleep 10000
+    stop := false
     doEverything()
     return
   
@@ -145,13 +161,8 @@ grind() {
         if(remainder = 0) {
 			clearRelicDialog()
             getClickables()
-            useAbilities()
-            
-			if (isProgressionModeOff()){
-				clickProgressionMode()
-			}
         }
-
+        
 		remainder := mod(i, 200)
         if(remainder = 0) {     
             goldFound := isGildedHeroInSecondSlot()    
@@ -160,8 +171,16 @@ grind() {
             }
 			clickBuyAvailableUpgrades()
 			clickHeroInSlot(2, 25)
+            useAbilities()
         }
 
+		remainder := mod(i, 500)
+        if(remainder = 0) {
+			if (isProgressionModeOff()){
+				clickProgressionMode()
+			}
+        }
+        
         i++
         if (i>1000) {
           i = 1
@@ -324,10 +343,26 @@ upgradeHerosOnScreen() {
   ; screen clicking the entire time.  This means some heroes will
   ; have more upgrades then others but everyone will be at
   ; at least 150
+  
+  ; If the window is active we can great increase the speed of this by
+  ; holding down 'Z' while clicking
+  WinGetActiveTitle, ActiveWindowTitle
+  if (ActiveWindowTitle = title) {
+    Send {z down}
+  }
   ypos := 200
   while (ypos < 600) {
-	ypos += 4
-	ControlClick,, %title%,,,20, x156 y%ypos% NA
+	ypos += 6
+    WinGetActiveTitle, ActiveWindowTitle
+    if (ActiveWindowTitle = title) {
+	   ControlClick,, %title%,,,1, x156 y%ypos% NA
+    }
+    else {
+	   ControlClick,, %title%,,,25, x156 y%ypos% NA
+    }
+  }
+  if (ActiveWindowTitle = title) {
+    Send {z up}
   }
 }
 
