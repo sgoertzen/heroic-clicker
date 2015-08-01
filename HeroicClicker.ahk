@@ -15,7 +15,7 @@
 ;  Set these values
 ; **************************************************************************************
 ; How many minutes before it should ascend
-global minutesPerAscension := 5
+global minutesPerAscension := 120
 ; Set the level of your iris ancient.  Set to Zero if you don't have iris
 global irislevel := 200
 ; change this value to adjust script speed (milliseconds)
