@@ -22,15 +22,15 @@ Features:
 
 ## Hotkeys
 - F9  - Do Everything (iris start, level heroes, grind, salvage relics, ascend, repeat)
-- F10 - Grind (kill monsters and level up, will not salvage relics or ascend)
-- F11 - Pause (press F10 to start it again)
+- F10 - Do Everything, but skipping iris start and hero level the first time
+- F11 - Pause (press F11 to resume)
 - F12 - Exit
 
 ## Warnings!
 ### Relics Destroyed
-If you choose "Do Everything" it will automatically salvage any relics you get.  They are gone forever then.
+If you choose "Do Everything" it will automatically salvage any relics you get.  They will be gone forever.
 ### Active Window Requirement
-The window must be active for the script to detect if auto-progression is off and to detect your highest gilded hero.  Everything else works with the window in the background.
+The window must be active for the script to detect if auto-progression is off and to detect your highest gilded hero.  Hero leveling is also much faster with the window active.  Everything else works with the window in the background. 
 ### Pause
 Using F11 to pause the grinding does not pause the ascension timer.
 

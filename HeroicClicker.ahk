@@ -7,20 +7,17 @@
 ; Instructions:
 ; Run .ahk file (using autohotkey: http://www.autohotkey.com/)
 ; F9  - Play the game forever (iris, level heroes, grind, salvage relics, ascend)
-; F10 - Grind (kill monsters and level up)
-; F11 - Pause (press F9 or F10 to start it again)
+; F10 - Play the game forever, skipping iris the first time 
+; F11 - Pause (press F11 to resume)
 ; F12 - Exit
-;
-; Helper hotkeys
-; F7 - Can be used to restart "Play forever" in the middle of a run
 ;
 ; **************************************************************************************
 ;  Set these values
 ; **************************************************************************************
 ; How many minutes before it should ascend
-global minutesPerAscension := 180
+global minutesPerAscension := 5
 ; Set the level of your iris ancient.  Set to Zero if you don't have iris
-global irislevel := 162
+global irislevel := 200
 ; change this value to adjust script speed (milliseconds)
 global timing := 25
 
@@ -32,6 +29,7 @@ global timing := 25
 
 global title := "Clicker Heroes" ; we will exact match against this for steam version
 global stop := false
+global pause := false
 global CLICK_STORM := 170
 global POWER_SURGE := 220
 global LUCKY_STRIKES := 270
@@ -41,59 +39,70 @@ global DARK_RITUAL := 425
 global SUPER_CLICK := 480
 global ENERGIZE := 530
 global RELOAD := 580
-
-F7::
-  setDefaults()
-  startTimer()
-  grind()
-  return
   
 F9::
-  setDefaults()
-  doEverything()
+  doEverything(true)
   return
   
 F10::
-  setDefaults()
-  grind()
+  doEverything(false)
   return
   
 F11::
-  stop := true
+  pause := !pause
   return
    
 F12::
   ExitApp
   return
 
-doEverything() {
-    startTimer()
-    salvageRelics()
-    ascend()
-    if (irislevel > 0){
+doEverything(includeIrisStart) {
+  setDefaults()
+  startTimer()
+  while (true) {
+    stop := false
+    if (includeIrisStart) {
+      salvageRelics()
+      ascend()
+      if (irislevel > 0){
         irisStart()
         levelAllHeroes()
+      }
     }
+    includeIrisStart := true
     grind()
+  }
 }
 
 startTimer(){
-    timeInMilli := minutesPerAscension * 60 * 1000
-    SetTimer, AscensionTimer, %timeInMilli%
+  timeInMilli := minutesPerAscension * 60 * 1000
+  SetTimer, AscensionTimer, %timeInMilli%
 }
 
 AscensionTimer:
-    SetTimer, AscensionTimer, off 
-    stop := true
-    ; Wait for everything to finish
-    Sleep 10000
-    stop := false
-    doEverything()
-    return
+  stop := true
+  return
   
 ascend() {
   scrollToListTop()
-  ControlClick,, %title%,,,, x545 y450 NA
+  ControlClick,, %title%,,,, x545 y420 NA
+  Sleep 1000
+
+  ; The scrollbar is inaccurate so just walk down clicking
+  ; Go from 200 to 580
+  ypos := 200
+  while (ypos < 600) {
+	ypos += 20
+	ControlClick,, %title%,,,, x298 y%ypos% NA
+  }
+
+  Sleep 1000
+  ; Click ok button
+  ControlClick,, %title%,,,, x500 y400 NA
+  
+  
+  scrollToListTop()
+  ControlClick,, %title%,,,, x545 y460 NA
   Sleep 1000
 
   ; The scrollbar is inaccurate so just walk down clicking
@@ -111,70 +120,75 @@ ascend() {
 
 irisStart() {
   ; Just kill some to get initial gold
-  Loop, 100 {
+  Loop, 20 {
     getSkillBonusClickable()
+    collectGold()
   }
 
   ; Go up by ten levels at a time
-  steps := Round(irislevel / 10)
+  steps := Round(irislevel / 13)
   Loop, %steps% {
     if(stop) {
         return
     }
     scrollToListBottom()
     clickHeroInSlot(2,10)
-    scrollToFarmZone(11)
+    scrollToFarmZone(13)
     ; Let it get some gold on this new level
-    Sleep 10000
+    ;Sleep 5000
+    Loop, 10 {
+      collectGold()
+      Sleep timing
+    }
   }
   clickProgressionMode()
 }
 
 
 grind() {
-    stop := false
+  ; We get the title match for the Clicker Heroes game window
+  setDefaults()
 
-    ; We get the title match for the Clicker Heroes game window
-    setDefaults()
-
-    i = 1
-    ; Send clicks to CH while the script is active (press F8 to stop)
-    while(!stop) {
-        ; try to catch skill bonus clickable
-        getSkillBonusClickable()
+  i = 1
+  ; Send clicks to CH while the script is active (press F8 to stop)
+  while(!stop) {
+    ; try to catch skill bonus clickable
+    getSkillBonusClickable()
 
 		remainder := mod(i, 50)
-        if(remainder = 0) {
-			clearRelicDialog()
-            getClickables()
-        }
+    if(remainder = 0) {
+	    clearRelicDialog()
+      getClickables()
+    }
         
 		remainder := mod(i, 200)
-        if(remainder = 0) {     
-            goldFound := isGildedHeroInSecondSlot()    
-            if (!goldFound) {
-                scrollToListBottom()
-            }
+    if(remainder = 0) {     
+      goldFound := isGildedHeroInSecondSlot()    
+      if (!goldFound) {
+        scrollToListBottom()
+      }
 			clickBuyAvailableUpgrades()
 			clickHeroInSlot(2, 25)
-            useAbilities()
-        }
+      useAbilities()
+    }
 
 		remainder := mod(i, 500)
-        if(remainder = 0) {
+    if(remainder = 0) {
 			if (isProgressionModeOff()){
 				clickProgressionMode()
 			}
-        }
-        
-        i++
-        if (i>1000) {
-          i = 1
-        }
-        Sleep timing
     }
-
-    return
+        
+    i++
+    if (i>1000) {
+      i = 1
+    }
+    Sleep timing
+    while (pause) {
+      Sleep 1000
+    }
+  }
+  return
 }
 
 salvageRelics() {
@@ -217,6 +231,19 @@ clearRelicDialog() {
   Sleep 1000
   ControlClick,, %title%,,,, x925 y120 NA
   Sleep 500
+  return
+}
+
+collectGold() {
+  ControlClick,, %title%,,,, d x760 y420 NA
+  Sleep 5
+  ControlClick,, %title%,,,, d x800 y420 NA
+  Sleep 5
+  ControlClick,, %title%,,,, d x850 y420 NA
+  Sleep 5
+  ControlClick,, %title%,,,, d x910 y420 NA
+  Sleep 5
+  ControlClick,, %title%,,,, u x5 y300 NA
   return
 }
 
