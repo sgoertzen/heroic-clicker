@@ -17,8 +17,9 @@ Features:
 
 ## Instructions (requires 64bit windows):
 1. Download the latest release from https://github.com/sgoertzen/heroic-clicker/releases
-2. Double click the HeroicClicker.exe
-3. Profit!
+2. Extract the zip file to a folder of your choice
+3. Double click the HeroicClicker.exe
+4. Profit!
 
 ## Hotkeys
 - F11 - Pause (press F11 to resume)
@@ -27,8 +28,8 @@ Features:
 ## Warnings!
 ### Relics Destroyed
 Any relics you get will be destroyed before ascending.  Feel free to pause the game (F11) and check your relics during a run.  
-### Active Window Requirement
-The window must be active for the script to detect if auto-progression is off and to detect your highest gilded hero.  Hero leveling is also much faster with the window active.  Everything else works with the window in the background. 
+### Works better with clicker heroes in front
+The clicker heroes window must be active for the script to detect if auto-progression is off and to detect your highest gilded hero.  Hero leveling is also much faster with the window active.  There are fall backs in case you want to run this in the background, but they make the run slighly less efficient 
 ### Pause
 Using F11 to pause the grinding does not pause the ascension timer.
 
