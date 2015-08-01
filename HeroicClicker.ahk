@@ -1,5 +1,5 @@
 ; Heroic Clicker 
-; Version: 1.1
+; Version: 3.0
 ; Date: 7/24/2015
 ; Author: SGoertzen (https://github.com/sgoertzen)
 ; Adapted from: Andrux51 (http://github.com/Andrux51)
@@ -25,7 +25,6 @@ global timing := 25
 ; **************************************************************************************
 
 #SingleInstance force ; if script is opened again, replace instance
-#Persistent ; script stays in memory until ExitApp is called or script crashes
 
 global title := "Clicker Heroes" ; we will exact match against this for steam version
 global stop := false
@@ -40,13 +39,8 @@ global SUPER_CLICK := 480
 global ENERGIZE := 530
 global RELOAD := 580
 
-F9::
-  showGUI()
-  return
-  
-F10::
-  doEverything(true)
-  return
+; Run the GUI on startup
+showGUI()
   
 F11::
   pause := !pause
@@ -68,6 +62,7 @@ showGui() {
   Gui, Add, Text, ym, (Set to zero if you don't have iris)
   Gui, Add, Text, ,(Set to zero to never auto ascend)
   Gui, Add, Text, ,(If checked, it will ascend first before auto-playing)
+  Gui, Add, Text, ,F11 to pause, F12 to exit
   Gui, Show,, Heroic Options
 }
 
