@@ -6,8 +6,8 @@
 ;
 ; Instructions:
 ; Run .ahk file (using autohotkey: http://www.autohotkey.com/)
-; F9  - Play the game forever (iris, level heroes, grind, salvage relics, ascend)
-; F10 - Play the game forever, skipping iris the first time 
+; F9  - Start auto-playing showing options dialog first
+; F10 - Start auto-playing with defaults (skip option dialog) 
 ; F11 - Pause (press F11 to resume)
 ; F12 - Exit
 ;
@@ -39,13 +39,13 @@ global DARK_RITUAL := 425
 global SUPER_CLICK := 480
 global ENERGIZE := 530
 global RELOAD := 580
-  
+
 F9::
-  doEverything(true)
+  showGUI()
   return
   
 F10::
-  doEverything(false)
+  doEverything(true)
   return
   
 F11::
@@ -53,15 +53,37 @@ F11::
   return
    
 F12::
+GuiClose:
+GuiEscape:
   ExitApp
   return
 
-doEverything(includeIrisStart) {
+showGui() {
+  Gui, Add, Text, , Iris Level: 
+  Gui, Add, Text, , Minutes Per Ascension:
+  Gui, Add, Edit, Number vEnteredLevel ym, %irislevel%  ; The ym option starts a new column of controls.
+  Gui, Add, Edit, Number vEnteredMinutes, %minutesPerAscension%
+  Gui, Add, Checkbox, Checked vAscendNow, Start with Ascension
+  Gui, Add, Button, default, &Run
+  Gui, Add, Text, ym, (Set to zero if you don't have iris)
+  Gui, Add, Text, ,(Set to zero to never auto ascend)
+  Gui, Add, Text, ,(If checked, it will ascend first before auto-playing)
+  Gui, Show,, Heroic Options
+}
+
+ButtonRun:
+  Gui, Submit
+  minutesPerAscension := EnteredMinutes
+  irisLevel := EnteredLevel
+  doEverything(AscendNow)
+  ExitApp
+  
+doEverything(ascendImmediately) {
   setDefaults()
   startTimer()
   while (true) {
     stop := false
-    if (includeIrisStart) {
+    if (ascendImmediately) {
       salvageRelics()
       ascend()
       if (irislevel > 0){
@@ -69,14 +91,16 @@ doEverything(includeIrisStart) {
         levelAllHeroes()
       }
     }
-    includeIrisStart := true
+    ascendImmediately := true
     grind()
   }
 }
 
 startTimer(){
-  timeInMilli := minutesPerAscension * 60 * 1000
-  SetTimer, AscensionTimer, %timeInMilli%
+  if (minutesPerAscension > 0) {
+    timeInMilli := minutesPerAscension * 60 * 1000
+    SetTimer, AscensionTimer, %timeInMilli%
+  }
 }
 
 AscensionTimer:

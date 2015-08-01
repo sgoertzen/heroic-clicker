@@ -21,8 +21,8 @@ Features:
 4. Use the hotkeys below to perform actions
 
 ## Hotkeys
-- F9  - Do Everything (iris start, level heroes, grind, salvage relics, ascend, repeat)
-- F10 - Do Everything, but skipping iris start and hero level the first time
+- F9  - Start auto-playing showing options dialog first
+- F10 - Start auto-playing with defaults (skip option dialog)
 - F11 - Pause (press F11 to resume)
 - F12 - Exit
 
