@@ -35,6 +35,6 @@ The window must be active for the script to detect if auto-progression is off an
 Using F11 to pause the grinding does not pause the ascension timer.
 
 ## Future Enhancements
-Keep track of the timers on skills and use them more effectively
-Automatically save out the game state on a regular interval
-
+- Keep track of the timers on skills and use them more effectively
+- Automatically save out the game state on a regular interval
+- Detect color of relic and don't ascend if it is purple
