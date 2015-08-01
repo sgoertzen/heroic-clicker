@@ -383,24 +383,27 @@ upgradeHerosOnScreen() {
   
   ; If the window is active we can great increase the speed of this by
   ; holding down 'Z' while clicking
-  WinGetActiveTitle, ActiveWindowTitle
-  if (ActiveWindowTitle = title) {
+  if (isClickerHeroesWindowActive()) {
     Send {z down}
   }
   ypos := 200
   while (ypos < 600) {
-	ypos += 6
-    WinGetActiveTitle, ActiveWindowTitle
-    if (ActiveWindowTitle = title) {
-	   ControlClick,, %title%,,,1, x156 y%ypos% NA
+	  ypos += 6
+    if (isClickerHeroesWindowActive()) {
+      ControlClick,, %title%,,,1, x156 y%ypos% NA
     }
     else {
-	   ControlClick,, %title%,,,25, x156 y%ypos% NA
+      ControlClick,, %title%,,,25, x156 y%ypos% NA
     }
   }
-  if (ActiveWindowTitle = title) {
+  if (isClickerHeroesWindowActive()) {
     Send {z up}
   }
+}
+
+isClickerHeroesWindowActive(){
+  WinGetActiveTitle, ActiveWindowTitle
+  return (ActiveWindowTitle = title)
 }
 
 clickBuyAvailableUpgrades(){
@@ -428,6 +431,12 @@ scrollToListBottom() {
 }
 
 isProgressionModeOff(){
+  if (!isClickerHeroesWindowActive()) {
+    ; So if we can't tell if it is off or on, we are just going to randomly
+    ; click it once in a while so at least it will still progress some
+    Random, rand, 0, 1 
+    return rand
+  }
   ImageSearch, foundX, foundY, 1124, 278, 1126, 280, *5 red.png
   if ErrorLevel = 2
 		return false
@@ -444,7 +453,6 @@ clickProgressionMode() {
 isGildedHeroInSecondSlot() {
     ; search at 15-20 x coordinates, between 320 and 380
   ImageSearch, foundX, foundY, 15, 320, 24, 380, *5 gold.png
-  ;ImageSearch, foundX, foundY, 17, 360, 17, 361, *5 gold.png
   if ErrorLevel = 2
 		return false
 	else if ErrorLevel = 1
