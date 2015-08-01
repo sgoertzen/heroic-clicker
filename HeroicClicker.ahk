@@ -1,5 +1,5 @@
 ; Heroic Clicker 
-; Version: 3.0
+; Version: 3.1
 ; Date: 7/24/2015
 ; Author: SGoertzen (https://github.com/sgoertzen)
 ; Adapted from: Andrux51 (http://github.com/Andrux51)
@@ -11,18 +11,11 @@
 ; F11 - Pause (press F11 to resume)
 ; F12 - Exit
 ;
-; **************************************************************************************
-;  Set these values
-; **************************************************************************************
-; How many minutes before it should ascend
-global minutesPerAscension := 120
-; Set the level of your iris ancient.  Set to Zero if you don't have iris
-global irislevel := 200
-; change this value to adjust script speed (milliseconds)
-global timing := 25
-
-; **************************************************************************************
-; **************************************************************************************
+; 
+; DON'T CHANGE THESE HERE.  Make the adjustments in the Settings.ini file
+global minutesPerAscension := 120 ; How many minutes before it should ascend
+global irislevel := 0 ; Level of your iris ancient
+global timing := 25 ; change this value to adjust script speed (milliseconds)
 
 #SingleInstance force ; if script is opened again, replace instance
 
@@ -41,6 +34,9 @@ global RELOAD := 580
 
 ; Run the GUI on startup
 showGUI()
+
+F6:: 
+  ExitApp
   
 F11::
   pause := !pause
@@ -53,16 +49,21 @@ GuiEscape:
   return
 
 showGui() {
+  ; Read the options from the ini, with defaults
+  IniRead, minutesPerAscension, Settings.ini, HeroicClicker, MinutesPerAscension, %minutesPerAscension%
+  IniRead, irislevel, Settings.ini, HeroicClicker, IrisLevel, %irislevel%
+  IniRead, ascendOnStart, Settings.ini, HeroicClicker, AscendOnStart, 0
+  
   Gui, Add, Text, , Iris Level: 
   Gui, Add, Text, , Minutes Per Ascension:
   Gui, Add, Edit, Number vEnteredLevel ym, %irislevel%  ; The ym option starts a new column of controls.
   Gui, Add, Edit, Number vEnteredMinutes, %minutesPerAscension%
-  Gui, Add, Checkbox, Checked vAscendNow, Start with Ascension
+  Gui, Add, Checkbox, Checked%ascendOnStart% vEntertedAscendOnStart, Start with Ascension
   Gui, Add, Button, default, &Run
   Gui, Add, Text, ym, (Set to zero if you don't have iris)
   Gui, Add, Text, ,(Set to zero to never auto ascend)
   Gui, Add, Text, ,(If checked, it will ascend first before auto-playing)
-  Gui, Add, Text, ,F11 to pause, F12 to exit
+  Gui, Add, Text, ,(Once running use F11 to pause, F12 to exit)
   Gui, Show,, Heroic Options
 }
 
@@ -70,7 +71,11 @@ ButtonRun:
   Gui, Submit
   minutesPerAscension := EnteredMinutes
   irisLevel := EnteredLevel
-  doEverything(AscendNow)
+  IniWrite, %minutesPerAscension%, Settings.ini, HeroicClicker, MinutesPerAscension
+  IniWrite, %irislevel%, Settings.ini, HeroicClicker, IrisLevel
+  IniWrite, %EntertedAscendOnStart%, Settings.ini, HeroicClicker, AscendOnStart
+  WinActivate, %title% ; Bring this to the front for now
+  doEverything(EntertedAscendOnStart)
   ExitApp
   
 doEverything(ascendImmediately) {
