@@ -1,6 +1,6 @@
 ; Heroic Clicker 
 ; Version: 3.1
-; Date: 7/24/2015
+; Date: 8/1/2015
 ; Author: SGoertzen (https://github.com/sgoertzen)
 ; Adapted from: Andrux51 (http://github.com/Andrux51)
 ;
@@ -35,9 +35,6 @@ global RELOAD := 580
 ; Run the GUI on startup
 showGUI()
 
-F6:: 
-  ExitApp
-  
 F11::
   pause := !pause
   return
