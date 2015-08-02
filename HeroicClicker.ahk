@@ -16,6 +16,7 @@
 global minutesPerAscension := 120 ; How many minutes before it should ascend
 global irislevel := 0 ; Level of your iris ancient
 global timing := 25 ; change this value to adjust script speed (milliseconds)
+global keepInFront := 0
 
 #SingleInstance force ; if script is opened again, replace instance
 
@@ -50,16 +51,19 @@ showGui() {
   IniRead, minutesPerAscension, Settings.ini, HeroicClicker, MinutesPerAscension, %minutesPerAscension%
   IniRead, irislevel, Settings.ini, HeroicClicker, IrisLevel, %irislevel%
   IniRead, ascendOnStart, Settings.ini, HeroicClicker, AscendOnStart, 0
+  IniRead, keepInFront, Settings.ini, HeroicClicker, KeepInFront, 0
   
   Gui, Add, Text, , Iris Level: 
   Gui, Add, Text, , Minutes Per Ascension:
   Gui, Add, Edit, Number vEnteredLevel ym, %irislevel%  ; The ym option starts a new column of controls.
   Gui, Add, Edit, Number vEnteredMinutes, %minutesPerAscension%
   Gui, Add, Checkbox, Checked%ascendOnStart% vEntertedAscendOnStart, Start with Ascension
+  Gui, Add, Checkbox, Checked%keepInFront% vEntertedKeepInFront, Keep window active
   Gui, Add, Button, default, &Run
   Gui, Add, Text, ym, (Set to zero if you don't have iris)
   Gui, Add, Text, ,(Set to zero to never auto ascend)
   Gui, Add, Text, ,(If checked, it will ascend first before auto-playing)
+  Gui, Add, Text, ,(Will bring the game to the front as necessary)
   Gui, Add, Text, ,(Once running use F11 to pause, F12 to exit)
   Gui, Show,, Heroic Options
 }
@@ -68,19 +72,27 @@ ButtonRun:
   Gui, Submit
   minutesPerAscension := EnteredMinutes
   irisLevel := EnteredLevel
+  keepInFront := KeepInFront
   IniWrite, %minutesPerAscension%, Settings.ini, HeroicClicker, MinutesPerAscension
   IniWrite, %irislevel%, Settings.ini, HeroicClicker, IrisLevel
   IniWrite, %EntertedAscendOnStart%, Settings.ini, HeroicClicker, AscendOnStart
-  WinActivate, %title% ; Bring this to the front for now
+  IniWrite, %EntertedKeepInFront%, Settings.ini, HeroicClicker, KeepInFront
+  bringToFront()
   doEverything(EntertedAscendOnStart)
   ExitApp
   
-doEverything(ascendImmediately) {
+bringToFront(){
+  if (keepInFront) {
+    WinActivate, %title% ; Bring this to the front for now
+  }
+}
+
+doEverything(shouldAscend) {
   setDefaults()
   startTimer()
   while (true) {
     stop := false
-    if (ascendImmediately) {
+    if (shouldAscend) {
       salvageRelics()
       ascend()
       if (irislevel > 0){
@@ -88,7 +100,7 @@ doEverything(ascendImmediately) {
         levelAllHeroes()
       }
     }
-    ascendImmediately := true
+    shouldAscend := true
     grind()
   }
 }
@@ -377,6 +389,7 @@ upgradeHerosOnScreen() {
   ; screen clicking the entire time.  This means some heroes will
   ; have more upgrades then others but everyone will be at
   ; at least 150
+  bringToFront()
   
   ; If the window is active we can great increase the speed of this by
   ; holding down 'Z' while clicking
@@ -428,6 +441,7 @@ scrollToListBottom() {
 }
 
 isProgressionModeOff(){
+  bringToFront()
   ImageSearch, foundX, foundY, 1124, 278, 1126, 280, *5 red.png
   if ErrorLevel = 2
 		return false
@@ -442,7 +456,8 @@ clickProgressionMode() {
 }
 
 isGildedHeroInSecondSlot() {
-    ; search at 15-20 x coordinates, between 320 and 380
+  ; search at 15-20 x coordinates, between 320 and 380
+  bringToFront()
   ImageSearch, foundX, foundY, 15, 320, 24, 380, *5 gold.png
   if ErrorLevel = 2
 		return false
