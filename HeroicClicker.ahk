@@ -428,12 +428,6 @@ scrollToListBottom() {
 }
 
 isProgressionModeOff(){
-  if (!isClickerHeroesWindowActive()) {
-    ; So if we can't tell if it is off or on, we are just going to randomly
-    ; click it once in a while so at least it will still progress some
-    Random, rand, 0, 1 
-    return rand
-  }
   ImageSearch, foundX, foundY, 1124, 278, 1126, 280, *5 red.png
   if ErrorLevel = 2
 		return false
