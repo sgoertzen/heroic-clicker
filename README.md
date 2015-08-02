@@ -1,6 +1,8 @@
 # Heroic Clicker 
 Version: 3.1
-Author: SGoertzen (https://github.com/sgoertzen) (Adapted from: http://github.com/Andrux51)
+Author: Shawn Goertzen (https://github.com/sgoertzen) (Adapted from: http://github.com/Andrux51)
+
+![Screenshot of UI](https://raw.githubusercontent.com/sgoertzen/heroic-clicker/master/Screenshot.png)
 
 Heroic Clicker will play the steam version of Clicker Heroes for you.  
 Features:
