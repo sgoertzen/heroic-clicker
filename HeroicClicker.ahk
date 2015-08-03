@@ -65,7 +65,7 @@ showGui() {
   Gui, Add, Text, ,(If checked, it will ascend first before auto-playing)
   Gui, Add, Text, ,(Will bring the game to the front as necessary)
   Gui, Add, Text, ,(Once running use F11 to pause, F12 to exit)
-  Gui, Show,, Heroic Options
+  Gui, Show,, Heroic Clicker
 }
 
 ButtonRun:
@@ -188,13 +188,13 @@ grind() {
     ; try to catch skill bonus clickable
     getSkillBonusClickable()
 
-		remainder := mod(i, 50)
+		remainder := mod(i, 30)
     if(remainder = 0) {
 	    clearRelicDialog()
       getClickables()
     }
         
-		remainder := mod(i, 200)
+		remainder := mod(i, 140)
     if(remainder = 0) {     
       goldFound := isGildedHeroInSecondSlot()    
       if (!goldFound) {
