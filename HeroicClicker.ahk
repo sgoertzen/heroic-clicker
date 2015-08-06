@@ -158,18 +158,19 @@ irisStart() {
     collectGold()
   }
 
-  ; Go up by ten levels at a time
+  ; Go up by twelve levels at a time
   steps := Round(irislevel / 13)
   Loop, %steps% {
     if(stop) {
         return
     }
     scrollToListBottom()
-    clickHeroInSlot(2,10)
+    clickHeroInSlot(2,25)
     scrollToFarmZone(13)
     ; Let it get some gold on this new level
-    ;Sleep 5000
     Loop, 10 {
+      getSkillBonusClickable()
+      getClickables()
       collectGold()
       Sleep timing
     }
@@ -190,7 +191,7 @@ grind() {
 
 		remainder := mod(i, 30)
     if(remainder = 0) {
-	    clearRelicDialog()
+	    ;clearRelicDialog()
       getClickables()
     }
         
@@ -201,7 +202,7 @@ grind() {
         scrollToListBottom()
       }
 			clickBuyAvailableUpgrades()
-			clickHeroInSlot(2, 25)
+			clickHeroInSlot(2, 50)
       useAbilities()
     }
 
@@ -327,19 +328,26 @@ clickZone() {
 }
 
 clickHeroInSlot(slot, times) {
-    if(slot = 1) {
-        ControlClick,, %title%,,, %times%, x156 y250 NA
-    }
-    if(slot = 2) {
-        ControlClick,, %title%,,, %times%, x156 y356 NA
-    }
-    if(slot = 3) {
-        ControlClick,, %title%,,, %times%, x156 y462 NA
-    }
-    if(slot = 4) {
-        ControlClick,, %title%,,, %times%, x156 y568 NA
-    }
-    return
+  if (times > 24 && isClickerHeroesWindowActive()) {
+    Send {z down}
+    times := (times+1) / 25
+  }
+  if(slot = 1) {
+    ControlClick,, %title%,,, %times%, x156 y250 NA
+  }
+  if(slot = 2) {
+    ControlClick,, %title%,,, %times%, x156 y356 NA
+  }
+  if(slot = 3) {
+    ControlClick,, %title%,,, %times%, x156 y462 NA
+  }
+  if(slot = 4) {
+    ControlClick,, %title%,,, %times%, x156 y568 NA
+  }
+  if (isClickerHeroesWindowActive()) {
+    Send {z up}
+  }
+  return
 }
 
 scrollToFarmZone(zone) {
@@ -412,6 +420,7 @@ upgradeHerosOnScreen() {
 }
 
 isClickerHeroesWindowActive(){
+  bringToFront()
   WinGetActiveTitle, ActiveWindowTitle
   return (ActiveWindowTitle = title)
 }
