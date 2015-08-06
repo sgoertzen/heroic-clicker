@@ -1,5 +1,5 @@
 # Heroic Clicker 
-Version: 3.1
+Version: 3.3
 Author: Shawn Goertzen (https://github.com/sgoertzen) (Adapted from: http://github.com/Andrux51)
 
 ![Screenshot of UI](https://raw.githubusercontent.com/sgoertzen/heroic-clicker/master/Screenshot.png)
@@ -34,6 +34,8 @@ Any relics you get will be destroyed before ascending.  Feel free to pause the g
 The clicker heroes window must be active for the script to detect if auto-progression is off and to detect your highest gilded hero.  Hero leveling is also much faster with the window active.  There are fall backs in case you want to run this in the background, but they make the run slighly less efficient 
 ### Pause
 Using F11 to pause the grinding does not pause the ascension timer.
+### Relic Dialog
+Be sure to turn off the "Show relic found popups" under options otherwise it will interrupt the program.
 
 ## Future Enhancements
 - Keep track of the timers on skills and use them more effectively
