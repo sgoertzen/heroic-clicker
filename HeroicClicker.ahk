@@ -374,14 +374,15 @@ levelAllHeroes() {
     ; This is set to click the very right side of each hire button
 	; so that it avoids clicking the "Gilded" button when it makes it
 	; to the bottom
-	offset = 0
-	Loop, 7 {
-		Sleep 500
-		ypos := 246 + offset * 55
-		ControlClick,, %title%,,,, x545 y%ypos% NA
-		Sleep 500
+  
+  stepAmount := 46
+  
+	Loop, 10 {
+  	Sleep 500
 		upgradeHerosOnScreen()
-		offset++
+    ypos := 246 + counter * stepAmount
+    ControlClick,, %title%,,,5, x550 y623 NA
+		Sleep 500
 	}
 
     ; Buy all available upgrades
