@@ -333,16 +333,16 @@ clickHeroInSlot(slot, times) {
     times := (times+1) / 25
   }
   if(slot = 1) {
-    ControlClick,, %title%,,, %times%, x156 y250 NA
+    ControlClick,, %title%,,, %times%, x50 y250 NA
   }
   if(slot = 2) {
-    ControlClick,, %title%,,, %times%, x156 y356 NA
+    ControlClick,, %title%,,, %times%, x50 y356 NA
   }
   if(slot = 3) {
-    ControlClick,, %title%,,, %times%, x156 y462 NA
+    ControlClick,, %title%,,, %times%, x50 y462 NA
   }
   if(slot = 4) {
-    ControlClick,, %title%,,, %times%, x156 y568 NA
+    ControlClick,, %title%,,, %times%, x50 y568 NA
   }
   if (isClickerHeroesWindowActive()) {
     Send {z up}
@@ -409,10 +409,10 @@ upgradeHerosOnScreen() {
   while (ypos < 600) {
 	  ypos += 6
     if (isClickerHeroesWindowActive()) {
-      ControlClick,, %title%,,,1, x156 y%ypos% NA
+      ControlClick,, %title%,,,1, x50 y%ypos% NA
     }
     else {
-      ControlClick,, %title%,,,25, x156 y%ypos% NA
+      ControlClick,, %title%,,,25, x50 y%ypos% NA
     }
   }
   if (isClickerHeroesWindowActive()) {
