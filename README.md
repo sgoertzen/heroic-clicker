@@ -1,5 +1,5 @@
 # Heroic Clicker 
-Version: 3.3
+Version: 3.4
 Author: Shawn Goertzen (https://github.com/sgoertzen) (Adapted from: http://github.com/Andrux51)
 
 ![Screenshot of UI](https://raw.githubusercontent.com/sgoertzen/heroic-clicker/master/Screenshot.png)
