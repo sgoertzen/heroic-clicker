@@ -85,13 +85,23 @@ ButtonRun:
   IniWrite, %irislevel%, Settings.ini, HeroicClicker, IrisLevel
   IniWrite, %EntertedAscendOnStart%, Settings.ini, HeroicClicker, AscendOnStart
   IniWrite, %EntertedKeepInFront%, Settings.ini, HeroicClicker, KeepInFront
-  bringToFront()
+  validateInputs()
+  if (keepInFront) {
+    bringToFront()
+  }
   doEverything(EntertedAscendOnStart)
   ExitApp
   
 bringToFront(){
   if (keepInFront) {
     WinActivate, %title% ; Bring this to the front for now
+  }
+}
+
+validateInputs() {
+  if (idleMinutes > minutesPerAscension) {
+    MsgBox, Idle minutes can not be higher then ascension minutes.  Program will exit.
+    ExitApp
   }
 }
 
