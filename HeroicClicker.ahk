@@ -206,20 +206,21 @@ grind() {
   ; We get the title match for the Clicker Heroes game window
   setDefaults()
 
-  while (idling) {
-    Sleep 5000
-  }
 
   i = 1
   ; Send clicks to CH while the script is active
   while(!stop) {
-    ; try to catch skill bonus clickable
-    getSkillBonusClickable()
-
-		remainder := mod(i, 30)
-    if(remainder = 0) {
-	    ;clearRelicDialog()
-      getClickables()
+    if (idling) {
+      Sleep 50
+    }
+    if (!idling) {
+      ; try to catch skill bonus clickable
+      getSkillBonusClickable()
+  
+      remainder := mod(i, 30)
+      if(remainder = 0) {
+        getClickables()
+      }
     }
         
 		remainder := mod(i, 140)
@@ -230,7 +231,9 @@ grind() {
       }
 			clickBuyAvailableUpgrades()
 			clickHeroInSlot(2, 50)
-      useAbilities()
+      if (!idling) {
+        useAbilities()
+      }
     }
 
 		remainder := mod(i, 500)
