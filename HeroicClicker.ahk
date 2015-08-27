@@ -14,6 +14,7 @@
 ; 
 ; DON'T CHANGE THESE HERE.  Make the adjustments in the Settings.ini file
 global minutesPerAscension := 120 ; How many minutes before it should ascend
+global idleMinutes := 0 ; How many minutes before it should ascend
 global irislevel := 0 ; Level of your iris ancient
 global timing := 25 ; change this value to adjust script speed (milliseconds)
 global keepInFront := 0
@@ -22,6 +23,7 @@ global keepInFront := 0
 
 global title := "Clicker Heroes" ; we will exact match against this for steam version
 global stop := false
+global idling := false
 global pause := false
 global CLICK_STORM := 170
 global POWER_SURGE := 220
@@ -49,19 +51,23 @@ GuiEscape:
 showGui() {
   ; Read the options from the ini, with defaults
   IniRead, minutesPerAscension, Settings.ini, HeroicClicker, MinutesPerAscension, %minutesPerAscension%
+  IniRead, idleMinutes, Settings.ini, HeroicClicker, IdleMinutes, %idleMinutes%
   IniRead, irislevel, Settings.ini, HeroicClicker, IrisLevel, %irislevel%
   IniRead, ascendOnStart, Settings.ini, HeroicClicker, AscendOnStart, 0
   IniRead, keepInFront, Settings.ini, HeroicClicker, KeepInFront, 0
   
   Gui, Add, Text, , Iris Level: 
   Gui, Add, Text, , Minutes Per Ascension:
+  Gui, Add, Text, , Idle minutes before clicking:
   Gui, Add, Edit, Number vEnteredLevel ym, %irislevel%  ; The ym option starts a new column of controls.
   Gui, Add, Edit, Number vEnteredMinutes, %minutesPerAscension%
+  Gui, Add, Edit, Number vEnteredIdleMinutes, %idleMinutes%
   Gui, Add, Checkbox, Checked%ascendOnStart% vEntertedAscendOnStart, Start with Ascension
   Gui, Add, Checkbox, Checked%keepInFront% vEntertedKeepInFront, Keep window active
   Gui, Add, Button, default, &Run
   Gui, Add, Text, ym, (Set to zero if you don't have iris)
   Gui, Add, Text, ,(Set to zero to never auto ascend)
+  Gui, Add, Text, ,(Set to zero to never idle)
   Gui, Add, Text, ,(If checked, it will ascend first before auto-playing)
   Gui, Add, Text, ,(Will bring the game to the front as necessary)
   Gui, Add, Text, ,(Once running use F11 to pause, F12 to exit)
@@ -71,9 +77,11 @@ showGui() {
 ButtonRun:
   Gui, Submit
   minutesPerAscension := EnteredMinutes
+  idleMinutes := EnteredIdleMinutes
   irisLevel := EnteredLevel
   keepInFront := KeepInFront
   IniWrite, %minutesPerAscension%, Settings.ini, HeroicClicker, MinutesPerAscension
+  IniWrite, %idleMinutes%, Settings.ini, HeroicClicker, IdleMinutes
   IniWrite, %irislevel%, Settings.ini, HeroicClicker, IrisLevel
   IniWrite, %EntertedAscendOnStart%, Settings.ini, HeroicClicker, AscendOnStart
   IniWrite, %EntertedKeepInFront%, Settings.ini, HeroicClicker, KeepInFront
@@ -90,8 +98,10 @@ bringToFront(){
 doEverything(shouldAscend) {
   setDefaults()
   startTimer()
+  
   while (true) {
     stop := false
+    idling := (idleMinutes > 0)
     if (shouldAscend) {
       salvageRelics()
       ascend()
@@ -101,6 +111,7 @@ doEverything(shouldAscend) {
       }
     }
     shouldAscend := true
+    startIdleTimer()
     grind()
   }
 }
@@ -112,9 +123,21 @@ startTimer(){
   }
 }
 
+startIdleTimer(){
+  if (idleMinutes > 0) {
+    idleTimeInMilli := idleMinutes * 60 * 1000
+    SetTimer, IdleTimer, %idleTimeInMilli%
+  }
+}
+
 AscensionTimer:
   stop := true
   return
+  
+IdleTimer:
+   idling := false
+   SetTimer, IdleTimer, OFF
+   return
   
 ascend() {
   scrollToListTop()
@@ -183,8 +206,12 @@ grind() {
   ; We get the title match for the Clicker Heroes game window
   setDefaults()
 
+  while (idling) {
+    Sleep 5000
+  }
+
   i = 1
-  ; Send clicks to CH while the script is active (press F8 to stop)
+  ; Send clicks to CH while the script is active
   while(!stop) {
     ; try to catch skill bonus clickable
     getSkillBonusClickable()
