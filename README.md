@@ -1,5 +1,5 @@
 # Heroic Clicker 
-Version: 3.4
+Version: 4.0
 Author: Shawn Goertzen (https://github.com/sgoertzen) (Adapted from: http://github.com/Andrux51)
 
 ![Screenshot of UI](https://raw.githubusercontent.com/sgoertzen/heroic-clicker/master/Screenshot.png)
@@ -8,8 +8,8 @@ Heroic Clicker will play the steam version of Clicker Heroes for you.
 Features:
 - Can play the entire game for you forever
 - Automatically clicks enemies and levels up your heroes
+- Supports idling for a while before clicking
 - Collects fish and bees
-- Correctly handles the dialog when a new artifact is found
 - Can automatically level up all heroes and purchase their skills
 - Will detect your gilded hero and will keep upgraded them only
 - Uses your skills as soon as they become available
