@@ -235,12 +235,20 @@ grind() {
         
 		remainder := mod(i, 140)
     if(remainder = 0) {     
-      goldFound := isGildedHeroInSecondSlot()    
-      if (!goldFound) {
+      gildInSecond := isGildedHeroInSecondSlot()
+      gildInThird := isGildedHeroInThirdSlot()    
+      thirdRowLeveled := isThirdRowLeveledUp()
+      if (!gildInSecond && !gildInThird) {
         scrollToListBottom()
       }
 			clickBuyAvailableUpgrades()
-			clickHeroInSlot(2, 50)
+      
+      if (gildInThird && thirdRowLeveled){
+          clickHeroInSlot(3, 50)
+      } else {
+         clickHeroInSlot(3, 10)
+			   clickHeroInSlot(2, 50)
+      }
       if (!idling) {
         useAbilities()
       }
@@ -506,9 +514,20 @@ clickProgressionMode() {
 }
 
 isGildedHeroInSecondSlot() {
-  ; search at 15-20 x coordinates, between 320 and 380
+  return imageAt(15, 230, 24, 380, "gold.png")
+}
+
+isGildedHeroInThirdSlot() {
+  return imageAt(15, 430, 24, 500, "gold.png")
+}
+
+isThirdRowLeveledUp() {
+  return imageAt(415, 450, 420, 458, "white.png")
+}
+
+imageAt(startX, endX, startY, endY, imageFile) {
   bringToFront()
-  ImageSearch, foundX, foundY, 15, 320, 24, 380, *5 gold.png
+  ImageSearch, foundX, foundY, startX, endX, startY, endY, *5 %imageFile%
   if ErrorLevel = 2
 		return false
 	else if ErrorLevel = 1

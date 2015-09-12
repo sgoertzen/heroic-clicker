@@ -22,6 +22,7 @@ New-Item($zipdir) -type directory
 Copy-Item "$currentdir/HeroicClicker.exe" $zipdir
 Copy-Item "$currentdir/gold.png" $zipdir
 Copy-Item "$currentdir/red.png" $zipdir
+Copy-Item "$currentdir/white.png" $zipdir
 
 # Build a zip file out of the .exe and the images
 Add-Type -A System.IO.Compression.FileSystem;
