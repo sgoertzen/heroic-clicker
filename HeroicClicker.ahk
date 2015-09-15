@@ -38,11 +38,6 @@ global RELOAD := 580
 ; Run the GUI on startup
 showGUI()
 
-F6::
-  thirdRowLeveled := isThirdRowLeveledUp()
-  MsgBox, Third row leveled %thirdRowLeveled%
-  ExitApp
-  
 F11::
   pause := !pause
   return
