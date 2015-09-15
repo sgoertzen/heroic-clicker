@@ -38,6 +38,11 @@ global RELOAD := 580
 ; Run the GUI on startup
 showGUI()
 
+F6::
+  thirdRowLeveled := isThirdRowLeveledUp()
+  MsgBox, Third row leveled %thirdRowLeveled%
+  ExitApp
+  
 F11::
   pause := !pause
   return
@@ -522,12 +527,12 @@ isGildedHeroInThirdSlot() {
 }
 
 isThirdRowLeveledUp() {
-  return imageAt(415, 450, 420, 458, "white.png")
+  return !imageAt(195, 518, 200, 522, "lightgold.png")
 }
 
-imageAt(startX, endX, startY, endY, imageFile) {
+imageAt(startX, startY, endX, endY, imageFile) {
   bringToFront()
-  ImageSearch, foundX, foundY, startX, endX, startY, endY, *5 %imageFile%
+  ImageSearch, foundX, foundY, startX, startY, endX, endY, *5 %imageFile%
   if ErrorLevel = 2
 		return false
 	else if ErrorLevel = 1
