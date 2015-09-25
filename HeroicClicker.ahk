@@ -86,9 +86,7 @@ ButtonRun:
   IniWrite, %EntertedAscendOnStart%, Settings.ini, HeroicClicker, AscendOnStart
   IniWrite, %EntertedKeepInFront%, Settings.ini, HeroicClicker, KeepInFront
   validateInputs()
-  if (keepInFront) {
-    bringToFront()
-  }
+  bringToFront()
   doEverything(EntertedAscendOnStart)
   ExitApp
   
@@ -218,6 +216,8 @@ grind() {
 
 
   i = 1
+  turnOnProgressionMode := false
+  
   ; Send clicks to CH while the script is active
   while(!stop) {
     if (idling) {
@@ -254,10 +254,17 @@ grind() {
       }
     }
 
-		remainder := mod(i, 500)
+		remainder := mod(i, 800)
     if(remainder = 0) {
 			if (isProgressionModeOff()){
-				clickProgressionMode()
+        ;Don't turn this back on right away.  Just set the flag to get it next time
+        if (turnOnProgressionMode) {
+          clickProgressionMode()
+          turnOnProgressionMode := false
+        } else {
+          ;MsgBox, Flag set to true
+				  turnOnProgressionMode := true
+        }
 			}
     }
         
