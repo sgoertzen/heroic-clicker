@@ -97,7 +97,7 @@ bringToFront(){
 }
 
 validateInputs() {
-  if (idleMinutes > minutesPerAscension) {
+  if (idleMinutes > minutesPerAscension && minutesPerAscension != 0) {
     MsgBox, Idle minutes can not be higher then ascension minutes.  Program will exit.
     ExitApp
   }
