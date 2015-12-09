@@ -59,7 +59,7 @@ showGui() {
   Gui, Add, Text, , Iris Level: 
   Gui, Add, Text, , Minutes Per Ascension:
   Gui, Add, Text, , Idle minutes before clicking:
-  Gui, Add, Edit, Number vEnteredLevel ym, %irislevel%  ; The ym option starts a new column of controls.
+  Gui, Add, Edit, w100 Number vEnteredLevel ym, %irislevel%  ; The ym option starts a new column of controls.
   Gui, Add, Edit, Number vEnteredMinutes, %minutesPerAscension%
   Gui, Add, Edit, Number vEnteredIdleMinutes, %idleMinutes%
   Gui, Add, Checkbox, Checked%ascendOnStart% vEntertedAscendOnStart, Start with Ascension
@@ -179,7 +179,7 @@ ascend() {
 
   Sleep 1000
   ; Click ok button
-  ControlClick,, %title%,,,, x500 y400 NA
+  ControlClick,, %title%,,,, x493 y481 NA
 }
 
 irisStart() {
@@ -257,14 +257,8 @@ grind() {
 		remainder := mod(i, 800)
     if(remainder = 0) {
 			if (isProgressionModeOff()){
-        ;Don't turn this back on right away.  Just set the flag to get it next time
-        if (turnOnProgressionMode) {
-          clickProgressionMode()
-          turnOnProgressionMode := false
-        } else {
-          ;MsgBox, Flag set to true
-				  turnOnProgressionMode := true
-        }
+               turnOnProgressionMode := true
+ clickProgressionMode()
 			}
     }
         
