@@ -56,7 +56,7 @@ showGui() {
   IniRead, ascendOnStart, Settings.ini, HeroicClicker, AscendOnStart, 0
   IniRead, keepInFront, Settings.ini, HeroicClicker, KeepInFront, 0
   
-  Gui, Add, Text, , Iris Level: 
+  Gui, Add, Text, , Iris Level(test): 
   Gui, Add, Text, , Minutes Per Ascension:
   Gui, Add, Text, , Idle minutes before clicking:
   Gui, Add, Edit, w100 Number vEnteredLevel ym, %irislevel%  ; The ym option starts a new column of controls.
