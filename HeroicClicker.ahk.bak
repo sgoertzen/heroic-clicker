@@ -149,7 +149,7 @@ IdleTimer:
   
 ascend() {
   ; Click ascend button
-  ControlClick,, %title%,,,, x1113 y291 NA
+  ControlClick,, %title%,,,, x1095 y287 NA
   Sleep 1000
   ; Click ok button
   ControlClick,, %title%,,,, x493 y481 NA
