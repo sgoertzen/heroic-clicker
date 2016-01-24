@@ -248,7 +248,7 @@ grind() {
 }
 
 salvageRelics() {
-  ControlClick,, %title%,,,, x373 y100 NA ; Click relics tab
+  ControlClick,, %title%,,,, x319 y100 NA ; Click relics tab
   Sleep 500  
   ControlClick,, %title%,,,, x278 y439 NA ; Click Salvage
   Sleep 500
