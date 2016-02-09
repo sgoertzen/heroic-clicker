@@ -16,7 +16,7 @@
 global minutesPerAscension := 120 ; How many minutes before it should ascend
 global idleMinutes := 0 ; How many minutes before it should ascend
 global irislevel := 0 ; Level of your iris ancient
-global timing := 25 ; change this value to adjust script speed (milliseconds)
+global timing := 20 ; change this value to adjust script speed (milliseconds)
 global keepInFront := 0
 
 #SingleInstance force ; if script is opened again, replace instance
@@ -163,14 +163,14 @@ irisStart() {
   }
 
   ; Go up by twelve levels at a time
-  steps := Round(irislevel / 13)
-  Loop, %steps% {
+  steps := Round(irislevel / 50)
+  Loop, 50 {
     if(stop) {
         return
     }
     scrollToListBottom()
     clickHeroInSlot(2,25)
-    scrollToFarmZone(13)
+    scrollToFarmZone(steps)
     ; Let it get some gold on this new level
     Loop, 10 {
       getSkillBonusClickable()
@@ -400,15 +400,15 @@ levelAllHeroes() {
   stepAmount := 46
   
 	Loop, 10 {
-  	Sleep 500
+  	Sleep 250
 		upgradeHerosOnScreen()
     ypos := 246 + counter * stepAmount
     ControlClick,, %title%,,,5, x550 y623 NA
-		Sleep 500
+		Sleep 250
 	}
 
     ; Buy all available upgrades
-    Sleep 300
+    Sleep 250
     scrollToListBottom()
     clickBuyAvailableUpgrades()
 
