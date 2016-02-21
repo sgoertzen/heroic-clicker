@@ -16,7 +16,7 @@
 global minutesPerAscension := 120 ; How many minutes before it should ascend
 global idleMinutes := 0 ; How many minutes before it should ascend
 global irislevel := 0 ; Level of your iris ancient
-global timing := 20 ; change this value to adjust script speed (milliseconds)
+global timing := 24 ; change this value to adjust script speed (milliseconds)
 global keepInFront := 0
 
 #SingleInstance force ; if script is opened again, replace instance
@@ -399,7 +399,7 @@ levelAllHeroes() {
   
   stepAmount := 46
   
-	Loop, 10 {
+	Loop, 13 {
   	Sleep 250
 		upgradeHerosOnScreen()
     ypos := 246 + counter * stepAmount
